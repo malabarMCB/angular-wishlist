@@ -5,6 +5,8 @@ import { HeaderComponent } from './header/header.component';
 import { SearchComponent } from './search/search.component';
 import { GamesContainerComponent } from './games-container/games-container.component';
 import { PaginationComponent } from './pagination/pagination.component';
+import {GamesService} from '../services/games.service.';
+import {HttpClientModule} from '@angular/common/http';
 
 @NgModule({
   declarations: [
@@ -15,7 +17,11 @@ import { PaginationComponent } from './pagination/pagination.component';
     PaginationComponent
   ],
   imports: [
-    CommonModule
+    CommonModule,
+    HttpClientModule
+  ],
+  providers: [
+    {provide: GamesService, useClass: GamesService}
   ]
 })
 export class HomeModule { }

@@ -24,35 +24,46 @@ describe('GamesService', () => {
     expect(service).toBeTruthy();
   });
 
-  it('should return games', () => {
-    const response = {
-      1: {
-        name: "Saints Row 2",
-        price: 49,
-        cover: "http://s.gama-gama.ru/fullsize/e56c325f30f3d01b0f0f1ea8d5b59d70.jpg"
-      },
-      2: {
-        name: "Super Meat Boy",
-        price: 95,
-        cover: "http://s.gama-gama.ru/fullsize/55ec56700fb25cea5bac845490b8551a.jpg"
-      }
-    };
+  const searchTestParameters = [
+    {description: 'should return games', pageNumber: 1, itemsPerPage: 2, response: {
+        1: {
+          name: 'Saints Row 2',
+          price: 49,
+          cover: 'http://s.gama-gama.ru/fullsize/e56c325f30f3d01b0f0f1ea8d5b59d70.jpg'
+        },
+        2: {
+          name: 'Super Meat Boy',
+          price: 95,
+          cover: 'http://s.gama-gama.ru/fullsize/55ec56700fb25cea5bac845490b8551a.jpg'
+        }
+      }, expected: [
+        new Game('1', 'Saints Row 2', 49, 'http://s.gama-gama.ru/fullsize/e56c325f30f3d01b0f0f1ea8d5b59d70.jpg'),
+        new Game('2', 'Super Meat Boy', 95, 'http://s.gama-gama.ru/fullsize/55ec56700fb25cea5bac845490b8551a.jpg')
+      ]},
+    {description: 'should return games 2', pageNumber: 1, itemsPerPage: 2, response: {
+        1: {
+          name: 'Saints Row 2',
+          price: 49,
+          cover: 'http://s.gama-gama.ru/fullsize/e56c325f30f3d01b0f0f1ea8d5b59d70.jpg'
+        }
+      }, expected: [
+        new Game('1', 'Saints Row 2', 49, 'http://s.gama-gama.ru/fullsize/e56c325f30f3d01b0f0f1ea8d5b59d70.jpg')
+      ]}
+  ];
+  searchTestParameters.forEach(parameter => {
+    it(parameter.description, () => {
 
-    const expected = [
-      new Game("1", "Saints Row 2", 49, "http://s.gama-gama.ru/fullsize/e56c325f30f3d01b0f0f1ea8d5b59d70.jpg"),
-      new Game("2", "Super Meat Boy", 95, "http://s.gama-gama.ru/fullsize/55ec56700fb25cea5bac845490b8551a.jpg")
-    ];
+      service.search(parameter.pageNumber, parameter.itemsPerPage).subscribe(actual => {
+        expect(actual).toEqual(parameter.expected);
+      });
 
-    service.search().subscribe(actual => {
-      expect(actual).toEqual(expected);
+      const request = httpTestingController.expectOne('assets/products.json');
+
+      expect(request.request.method).toEqual('GET');
+
+      request.flush(parameter.response);
+
+      httpTestingController.verify();
     });
-
-    const request = httpTestingController.expectOne('assets/products.json');
-
-    expect(request.request.method).toEqual('GET');
-
-    request.flush(response);
-
-    httpTestingController.verify();
   });
 });

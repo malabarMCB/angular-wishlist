@@ -3,10 +3,10 @@
     <div class="col-lg-11 pt-4">
       <div class="input-group">
         <div class="input-group-prepend">
-          <button class="btn btn-outline-success" type="button">Search</button>
+          <button (click)="search(searchInput.value)" class="btn btn-outline-success" type="button">Search</button>
         </div>
-        <input type="text" class="form-control" placeholder="" aria-label="Example text with button addon"
-               aria-describedby="button-addon1">
+        <input (keydown.enter)="search(searchInput.value)" type="text" class="form-control" placeholder="" aria-label="Example text with button addon"
+               aria-describedby="button-addon1" #searchInput>
       </div>
     </div>
   </div>

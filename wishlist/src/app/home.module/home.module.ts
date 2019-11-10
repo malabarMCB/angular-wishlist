@@ -7,6 +7,7 @@ import { GamesContainerComponent } from './games-container/games-container.compo
 import { PaginationComponent } from './pagination/pagination.component';
 import {GamesService} from '../services/games.service.';
 import {HttpClientModule} from '@angular/common/http';
+import { GameComponent } from './game/game.component';
 
 @NgModule({
   declarations: [
@@ -14,11 +15,13 @@ import {HttpClientModule} from '@angular/common/http';
     HeaderComponent,
     SearchComponent,
     GamesContainerComponent,
-    PaginationComponent
+    PaginationComponent,
+    GameComponent
   ],
   imports: [
     CommonModule,
-    HttpClientModule
+    HttpClientModule,
+
   ],
   providers: [
     {provide: GamesService, useClass: GamesService}

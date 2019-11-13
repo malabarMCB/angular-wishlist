@@ -11,13 +11,24 @@ import {Game} from '../../game/game.model';
 })
 export class GamesContainerComponent implements OnInit {
   games: Game[];
+  itemsPerPage = 8;
+  itemsTotalCount = 0;
+  currentPage = 1;
+  showPagesCount = 5;
 
   constructor(private gameService: GamesService, private store: Store<GameState>) { }
 
   ngOnInit() {
     this.store.select(getSearchValue).subscribe(searchValue => {
-      this.gameService.search(1, 8, searchValue).subscribe(games => this.games = games);
+      this.gameService.search(1, 8, searchValue).subscribe(response => {
+        this.itemsTotalCount = response.totalCount;
+        this.games = response.games;
+        this.currentPage = 1;
+      });
     });
   }
 
+  getTotalPageCount(): number {
+    return Math.ceil(this.itemsTotalCount / this.itemsPerPage);
+  }
 }

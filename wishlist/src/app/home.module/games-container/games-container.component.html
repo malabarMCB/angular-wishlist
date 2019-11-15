@@ -21,4 +21,8 @@
 </div>
 <!-- /.container -->
 
-<app-pagination [currentPage]="currentPage" [totalPageCount]="getTotalPageCount()" [showPagesCount]="showPagesCount"></app-pagination>
+<app-pagination [currentPage]="currentPage"
+                [totalPageCount]="getTotalPageCount()"
+                [showPagesCount]="showPagesCount"
+                (pageClicked)="onPageClicked($event)">
+</app-pagination>

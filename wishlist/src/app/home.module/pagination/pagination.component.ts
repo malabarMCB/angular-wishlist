@@ -1,4 +1,4 @@
-import {Component, Input, OnChanges, SimpleChanges} from '@angular/core';
+import {Component, EventEmitter, Input, OnChanges, Output, SimpleChanges} from '@angular/core';
 
 @Component({
   selector: 'app-pagination',
@@ -9,6 +9,8 @@ export class PaginationComponent implements OnChanges {
   @Input() currentPage = 0;
   @Input() totalPageCount = 0;
   @Input() showPagesCount = 0;
+
+  @Output() pageClicked: EventEmitter<number> = new EventEmitter();
 
   pageNumbers: number[];
   showBackward: boolean;
@@ -31,6 +33,11 @@ export class PaginationComponent implements OnChanges {
     }
 
     this.fillPagination();
+  }
+
+  setCurrentPage(page: number): boolean {
+    this.pageClicked.emit(page);
+    return false;
   }
 
   private fillPagination() {

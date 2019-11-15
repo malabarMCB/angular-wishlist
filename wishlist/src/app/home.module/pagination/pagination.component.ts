@@ -17,7 +17,19 @@ export class PaginationComponent implements OnChanges {
   constructor() { }
 
   ngOnChanges(changes: SimpleChanges) {
-    console.log(changes);
+
+    if (changes.currentPage) {
+      this.currentPage = changes.currentPage.currentValue;
+    }
+
+    if (changes.totalPageCount) {
+      this.totalPageCount = changes.totalPageCount.currentValue;
+    }
+
+    if (changes.showPagesCount) {
+      this.showPagesCount = changes.showPagesCount.currentValue;
+    }
+
     this.fillPagination();
   }
 
@@ -29,12 +41,16 @@ export class PaginationComponent implements OnChanges {
       this.currentPage = this.totalPageCount;
     }
 
-    const separator = Math.ceil(this.showPagesCount / 2);
-    const end = this.showPagesCount > this.totalPageCount ? this.showPagesCount : this.currentPage + separator;
-    const start = this.showPagesCount > this.totalPageCount ? 1 : this.currentPage - separator + 1;
+    const separator = Math.floor(this.showPagesCount / 2);
+
+    const start = this.totalPageCount > this.currentPage + this.showPagesCount
+      ? Math.max(this.currentPage - separator, 1)
+      : Math.max(this.totalPageCount - this.showPagesCount + 1, 1);
+
+    const end = Math.min(start + this.showPagesCount, this.totalPageCount + 1);
     this.pageNumbers = new Array<number>(end - start)
-      .fill(start)
-      .map((d, i) => i + 1);
+      .fill(1)
+      .map((d, i) => start + i);
 
     this.showBackward = this.pageNumbers.indexOf(this.currentPage) !== 0;
     this.showForward = this.pageNumbers.length - 1 !== this.currentPage;

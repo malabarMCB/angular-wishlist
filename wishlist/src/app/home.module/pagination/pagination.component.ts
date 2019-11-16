@@ -59,7 +59,7 @@ export class PaginationComponent implements OnChanges {
       .fill(1)
       .map((d, i) => start + i);
 
-    this.showBackward = this.pageNumbers.indexOf(this.currentPage) !== 0;
-    this.showForward = this.pageNumbers.length - 1 !== this.currentPage;
+    this.showBackward = this.currentPage !== 1;
+    this.showForward = this.pageNumbers.length  !== this.currentPage;
   }
 }

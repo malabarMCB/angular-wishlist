@@ -36,7 +36,7 @@ describe('PaginationComponent', () => {
     {description: 'should create pages 12', currentPage: 18, totalPageCount: 20, showPagesCount: 5, expectedPages: [16, 17, 18, 19, 20]},
     {description: 'should create pages 13', currentPage: 18, totalPageCount: 20, showPagesCount: 4, expectedPages: [17, 18, 19, 20]},
     {description: 'should create pages 14', currentPage: 19, totalPageCount: 20, showPagesCount: 4, expectedPages: [17, 18, 19, 20]},
-    {description: 'should create pages 14', currentPage: 20, totalPageCount: 20, showPagesCount: 4, expectedPages: [17, 18, 19, 20]},
+    {description: 'should create pages 15', currentPage: 20, totalPageCount: 20, showPagesCount: 4, expectedPages: [17, 18, 19, 20]},
   ];
   paginationTestParameters.forEach(parameter => {
     it(parameter.description, () => {

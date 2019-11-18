@@ -38,8 +38,8 @@ describe('GamesService', () => {
           cover: 'http://s.gama-gama.ru/fullsize/55ec56700fb25cea5bac845490b8551a.jpg'
         }
       }, expected: {totalCount: 2, games: [
-          new Game('1', 'Saints Row 2', 49, 'http://s.gama-gama.ru/fullsize/e56c325f30f3d01b0f0f1ea8d5b59d70.jpg'),
-          new Game('2', 'Super Meat Boy', 95, 'http://s.gama-gama.ru/fullsize/55ec56700fb25cea5bac845490b8551a.jpg')
+          {id: '1', name: 'Saints Row 2', price: 49, coverUrl: 'http://s.gama-gama.ru/fullsize/e56c325f30f3d01b0f0f1ea8d5b59d70.jpg'},
+          {id: '2', name: 'Super Meat Boy', price: 95, coverUrl: 'http://s.gama-gama.ru/fullsize/55ec56700fb25cea5bac845490b8551a.jpg'}
         ]}
       },
     {description: 'should return games 2', pageNumber: 1, itemsPerPage: 2, response: {
@@ -50,7 +50,7 @@ describe('GamesService', () => {
         }
       }, expected: {
         totalCount: 1, games: [
-          new Game('1', 'Saints Row 2', 49, 'http://s.gama-gama.ru/fullsize/e56c325f30f3d01b0f0f1ea8d5b59d70.jpg')
+          {id: '1', name: 'Saints Row 2', price: 49, coverUrl: 'http://s.gama-gama.ru/fullsize/e56c325f30f3d01b0f0f1ea8d5b59d70.jpg'}
         ]
       }}
   ];

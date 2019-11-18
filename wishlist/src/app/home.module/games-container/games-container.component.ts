@@ -1,8 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import {GamesService} from '../../services/games.service.';
 import {Store} from '@ngrx/store';
-import {GameState, getSearchValue} from '../../game/game.reducer';
+import {GameState, getGamesInCart, getSearchValue} from '../../game/game.reducer';
 import {Game} from '../../game/game.model';
+import {addGameToCart} from '../../game/game.actions';
+import {forkJoin} from 'rxjs';
+import {first, map, mergeMap, skip} from 'rxjs/operators';
 
 @Component({
   selector: 'app-games-container',
@@ -10,7 +13,7 @@ import {Game} from '../../game/game.model';
   styleUrls: ['./games-container.component.sass']
 })
 export class GamesContainerComponent implements OnInit {
-  games: Game[];
+  games: {info: Game, isInCart: boolean}[] = [];
 
 /*
   take from config
@@ -26,11 +29,27 @@ export class GamesContainerComponent implements OnInit {
   constructor(private gameService: GamesService, private store: Store<GameState>) { }
 
   ngOnInit() {
-    this.store.select(getSearchValue).subscribe(searchValue => {
-      this.searchValue = searchValue;
-      this.currentPage = 1;
-      this.getGames();
+    this.store.select(getSearchValue).pipe(
+      mergeMap(searchValue => forkJoin(
+        this.gameService.search(this.currentPage, this.gamesPerPage, searchValue).pipe(map(response => {
+          return {response, searchValue};
+        })),
+        this.store.select(getGamesInCart).pipe(first())
+      ))
+    ).subscribe(x => {
+      this.gamesTotalCount = x[0].response.totalCount;
+      this.searchValue = x[0].searchValue;
+      this.games = x[0].response.games.map(game => {
+        return { info: game, isInCart : !!x[1].find(g => g.id === game.id)};
+      });
     });
+
+    this.store.select(getGamesInCart).pipe(skip(1))
+      .subscribe((gamesInCart: Game[]) => {
+        this.games = this.games.map(game => {
+          return { info: game.info, isInCart : !!gamesInCart.find(g => g.id === game.info.id)};
+        });
+      });
   }
 
   getTotalPageCount(): number {
@@ -39,13 +58,18 @@ export class GamesContainerComponent implements OnInit {
 
   onPageClicked(page: number) {
     this.currentPage = page;
-    this.getGames();
+
+    forkJoin(this.gameService.search(this.currentPage, this.gamesPerPage, this.searchValue),
+      this.store.select(getGamesInCart).pipe(first())
+    ).toPromise().then(x => {
+      this.gamesTotalCount = x[0].totalCount;
+      this.games = x[0].games.map(game => {
+        return { info: game, isInCart : !!x[1].find(g => g.id === game.id)};
+      });
+    });
   }
 
-  private getGames(): void {
-    this.gameService.search(this.currentPage, this.gamesPerPage, this.searchValue).subscribe(response => {
-      this.gamesTotalCount = response.totalCount;
-      this.games = response.games;
-    });
+  onGameSelected(game: Game) {
+    this.store.dispatch(addGameToCart({game}));
   }
 }

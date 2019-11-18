@@ -13,13 +13,12 @@ export class GamesService {
   search(pageNumber: number, itemsPerPage: number, text?: string): Observable<GamesSearchResponse> {
     return this.http.get('assets/products.json')
       .pipe(map(games => {
-        return Object.keys(games).map(key => {
-          return new Game(key, games[key].name, games[key].price, games[key].cover);
-        });
-      }),
+          return Object.keys(games).map(key => {
+            return { id: key, name: games[key].name, price: games[key].price, coverUrl: games[key].cover} as Game; });
+        }),
         map((games: Game[]) => (text)
           ? games.filter(x => x.name.toLocaleLowerCase().startsWith(text.toLocaleLowerCase()))
-        : games),
+          : games),
         map((games: Game[]) => {
           return {totalCount: games.length, games};
         }),
@@ -27,6 +26,6 @@ export class GamesService {
           response.games = response.games.slice((pageNumber - 1) * itemsPerPage, pageNumber * itemsPerPage);
           return response;
         })
-        );
+      );
   }
 }

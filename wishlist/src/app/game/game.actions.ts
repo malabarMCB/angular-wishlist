@@ -6,22 +6,7 @@ export const setSearchValue = createAction(
   props<{searchValue: string}>()
 );
 
-/*export const setItemsPerPage = createAction(
-  '[Game] Set items per page',
-  props<{itemsPerPage: number}>()
+export const addGameToCart = createAction(
+  '[Game] Add info to cart',
+  props<{game: Game}>()
 );
-
-export const setPageNumber = createAction(
-  '[Game] Set page number',
-  props<{pageNumber: number}>()
-);
-
-export const addToCart = createAction(
-  '[Game] Add to cart',
-  props<{games: Game}>()
-);
-
-export const removeFromCart = createAction(
-  '[Game] Add to cart',
-  props<{games: Game}>()
-);*/

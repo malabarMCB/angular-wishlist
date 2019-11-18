@@ -10,3 +10,8 @@ export const addGameToCart = createAction(
   '[Game] Add info to cart',
   props<{game: Game}>()
 );
+
+export const removeGameFromCart = createAction(
+  '[Game] Remove game from cart',
+  props<{gameId: string}>()
+);

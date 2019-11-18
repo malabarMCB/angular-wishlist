@@ -15,7 +15,8 @@ const initialState: GameState = {
 const reducer = createReducer(
   initialState,
   on(GameActions.setSearchValue, (state, {searchValue}) => ({...state, searchValue})),
-  on(GameActions.addGameToCart, (state, {game}) => ({...state, gamesInCart: [...state.gamesInCart, game]}))
+  on(GameActions.addGameToCart, (state, {game}) => ({...state, gamesInCart: [...state.gamesInCart, game]})),
+  on(GameActions.removeGameFromCart, (state, {gameId}) => ({...state, gamesInCart: state.gamesInCart.filter(x => x.id !== gameId)}))
 );
 
 export function gameReducer(state: GameState | undefined, action: Action) {

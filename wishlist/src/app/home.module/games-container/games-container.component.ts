@@ -1,10 +1,10 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnDestroy, OnInit} from '@angular/core';
 import {GamesService} from '../../services/games.service.';
 import {Store} from '@ngrx/store';
 import {GameState, getGamesInCart, getSearchValue} from '../../game/game.reducer';
 import {Game} from '../../game/game.model';
 import {addGameToCart} from '../../game/game.actions';
-import {forkJoin} from 'rxjs';
+import {forkJoin, Subscription} from 'rxjs';
 import {first, map, mergeMap, skip} from 'rxjs/operators';
 
 @Component({
@@ -12,43 +12,42 @@ import {first, map, mergeMap, skip} from 'rxjs/operators';
   templateUrl: './games-container.component.html',
   styleUrls: ['./games-container.component.sass']
 })
-export class GamesContainerComponent implements OnInit {
+export class GamesContainerComponent implements OnInit, OnDestroy {
   games: {info: Game, isInCart: boolean}[] = [];
 
 /*
   take from config
 */
-  gamesPerPage = 8;
+  readonly gamesPerPage = 8;
   gamesTotalCount = 0;
-  showPagesCount = 5;
+  readonly showPagesCount = 5;
 
   currentPage = 1;
 
   searchValue: string;
 
-  constructor(private gameService: GamesService, private store: Store<GameState>) { }
+  private getSearchValueSubscription: Subscription;
+  private getGamesInCartSubscription: Subscription;
+
+  constructor(private readonly gameService: GamesService, private readonly store: Store<GameState>) { }
 
   ngOnInit() {
-    this.store.select(getSearchValue).pipe(
+    this.getSearchValueSubscription = this.store.select(getSearchValue).pipe(
       mergeMap(searchValue => forkJoin(
         this.gameService.search(this.currentPage, this.gamesPerPage, searchValue).pipe(map(response => {
           return {response, searchValue};
         })),
         this.store.select(getGamesInCart).pipe(first())
       ))
-    ).subscribe(x => {
-      this.gamesTotalCount = x[0].response.totalCount;
-      this.searchValue = x[0].searchValue;
-      this.games = x[0].response.games.map(game => {
-        return { info: game, isInCart : !!x[1].find(g => g.id === game.id)};
-      });
+    ).subscribe(([searchResponse, gamesInCart]) => {
+      this.gamesTotalCount = searchResponse.response.totalCount;
+      this.searchValue = searchResponse.searchValue;
+      this.setGames(searchResponse.response.games, gamesInCart);
     });
 
-    this.store.select(getGamesInCart).pipe(skip(1))
+    this.getGamesInCartSubscription = this.store.select(getGamesInCart).pipe(skip(1))
       .subscribe((gamesInCart: Game[]) => {
-        this.games = this.games.map(game => {
-          return { info: game.info, isInCart : !!gamesInCart.find(g => g.id === game.info.id)};
-        });
+        this.setGames(this.games.map(game => game.info), gamesInCart);
       });
   }
 
@@ -61,15 +60,24 @@ export class GamesContainerComponent implements OnInit {
 
     forkJoin(this.gameService.search(this.currentPage, this.gamesPerPage, this.searchValue),
       this.store.select(getGamesInCart).pipe(first())
-    ).toPromise().then(x => {
-      this.gamesTotalCount = x[0].totalCount;
-      this.games = x[0].games.map(game => {
-        return { info: game, isInCart : !!x[1].find(g => g.id === game.id)};
-      });
+    ).pipe(first()).subscribe(([searchResponse, gamesInCart]) => {
+      this.gamesTotalCount = searchResponse.totalCount;
+      this.setGames(searchResponse.games, gamesInCart);
     });
   }
 
   onGameSelected(game: Game) {
     this.store.dispatch(addGameToCart({game}));
+  }
+
+  private setGames(games: Game[], gamesInCart: Game[]): void {
+    this.games = games.map(game => {
+      return { info: game, isInCart : !!gamesInCart.find(g => g.id === game.id)};
+    });
+  }
+
+  ngOnDestroy(): void {
+    this.getSearchValueSubscription.unsubscribe();
+    this.getGamesInCartSubscription.unsubscribe();
   }
 }

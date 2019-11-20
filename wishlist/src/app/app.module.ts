@@ -7,10 +7,10 @@ import {ActionReducer, ActionReducerMap, MetaReducer, StoreModule} from '@ngrx/s
 import {gameReducer, GameState} from './game/game.reducer';
 import { StoreDevtoolsModule } from '@ngrx/store-devtools';
 import { environment } from '../environments/environment';
-import {localStorageSync} from 'ngrx-store-localstorage';
+import {localStorageSync, rehydrateApplicationState} from 'ngrx-store-localstorage';
 
 export function localStorageSyncReducer(reducer: ActionReducer<any>): ActionReducer<any> {
-  return localStorageSync({keys: ['state']})(reducer);
+  return localStorageSync({keys: ['state'], rehydrate: true})(reducer);
 }
 const metaReducers: Array<MetaReducer<any, any>> = [localStorageSyncReducer];
 

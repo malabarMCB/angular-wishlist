@@ -1,12 +1,12 @@
-<nav class="navbar navbar-dark bg-dark fixed-top" style="background-color: #0C120C">
+<nav class="navbar navbar-dark bg-dark fixed-top">
   <div class="container">
-    <a class="navbar-brand" href="#">My awesome shop</a>
+    <span class="navbar-brand">My awesome shop</span>
     <form class="form-inline">
-      <button class="btn" [ngClass]="games.length == 0 ? 'btn-outline-success' : 'btn-success'"
-              [disabled]="games.length == 0"
+      <button [ngClass]="isCartEmpty() ? 'btn btn-outline-success' : ' btn btn-success'"
+              [disabled]="isCartEmpty()"
               data-toggle="modal"
               data-target="#exampleModalLong"
-              type="button"><i class="fa" style="font-size:24px">&#xf07a;</i> {{games.length}}</button>
+              type="button"><i class="fa cart ico">&#xf07a;</i> {{games.length}}</button>
     </form>
 
   </div>
@@ -20,7 +20,7 @@
       </div>
       <div class="modal-body">
 
-        <div *ngFor="let game of games" class="card mb-3" style="max-width: 540px;">
+        <div *ngFor="let game of games" class="card mb-3 game-card">
           <div class="row no-gutters">
             <div class="col-md-4">
               <img src="{{game.coverUrl}}" class="card-img" alt="...">
@@ -41,7 +41,7 @@
 
       </div>
       <div class="modal-footer justify-content-center">
-        <button type="button" class="btn btn-danger" [disabled]="games.length == 0">Confirm purchase</button>
+        <button type="button" class="btn btn-danger" [disabled]="isCartEmpty()">Confirm purchase</button>
       </div>
     </div>
   </div>

@@ -8,7 +8,7 @@
     <h5>${{game.price}}</h5>
   </div>
   <div class="card-footer">
-    <h5 *ngIf="isInCart">In Cart</h5>
+    <h5 class="in-cart" *ngIf="isInCart">In Cart</h5>
     <button *ngIf="!isInCart" (click)="select()" type="button" class="btn btn-success btn-block">Add to cart</button>
   </div>
 </div>

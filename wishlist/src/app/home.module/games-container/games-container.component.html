@@ -1,32 +1,28 @@
 <div class="container mt-4">
 
   <div class="row">
-
     <div class="col-lg-11">
 
-      <div class="row">
+      <div *ngIf="games.length == 0" class="row">
+        <h3 >There are no games...ops</h3>
+        <img src="assets/empty result.svg" >
+      </div>
 
-      <app-game *ngFor="let game of games"
+      <div *ngIf="games.length != 0" class="row">
+        <app-game *ngFor="let game of games"
                 [game]="game.info"
                 [isInCart]="game.isInCart"
                 (gameSelected)="onGameSelected($event)"
                 class="col-lg-3 col-md-6 mb-4">
-      </app-game>
-
+        </app-game>
       </div>
-      <!-- /.row -->
 
     </div>
-    <!-- /.col-lg-9 -->
-
   </div>
-  <!-- /.row -->
-
-
 </div>
-<!-- /.container -->
 
-<app-pagination [currentPage]="currentPage"
+<app-pagination *ngIf="games.length != 0"
+                [currentPage]="currentPage"
                 [totalPageCount]="getTotalPageCount()"
                 [showPagesCount]="showPagesCount"
                 (pageClicked)="onPageClicked($event)">

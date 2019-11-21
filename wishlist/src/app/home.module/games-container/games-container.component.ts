@@ -1,7 +1,7 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
 import {GamesService} from '../../services/games.service.';
 import {Store} from '@ngrx/store';
-import {GameState, getGamesInCart, getSearchValue} from '../../game/game.reducer';
+import {GameState, getGamesInCart, getSearchValue, getGamesState} from '../../game/game.reducer';
 import {Game} from '../../game/game.model';
 import {addGameToCart} from '../../game/game.actions';
 import {forkJoin, Subscription} from 'rxjs';
@@ -27,7 +27,6 @@ export class GamesContainerComponent implements OnInit, OnDestroy {
   games: {info: Game, isInCart: boolean}[] = [];
   gamesTotalCount = 0;
   currentPage = 1;
-  searchValue: string;
 
   constructor(private readonly gameService: GamesService,
               private readonly store: Store<GameState>,
@@ -39,15 +38,12 @@ export class GamesContainerComponent implements OnInit, OnDestroy {
   ngOnInit() {
     this.getSearchValueSubscription = this.store.select(getSearchValue).pipe(
       mergeMap(searchValue => forkJoin(
-        this.gameService.search(this.currentPage, this.gamesPerPage, searchValue).pipe(map(response => {
-          return {response, searchValue};
-        })),
+        this.gameService.search(this.currentPage, this.gamesPerPage, searchValue),
         this.store.select(getGamesInCart).pipe(first())
       ))
     ).subscribe(([searchResponse, gamesInCart]) => {
-      this.gamesTotalCount = searchResponse.response.totalCount;
-      this.searchValue = searchResponse.searchValue;
-      this.setGames(searchResponse.response.games, gamesInCart);
+      this.gamesTotalCount = searchResponse.totalCount;
+      this.setGames(searchResponse.games, gamesInCart);
     });
 
     this.getGamesInCartSubscription = this.store.select(getGamesInCart).pipe(skip(1))
@@ -62,9 +58,12 @@ export class GamesContainerComponent implements OnInit, OnDestroy {
 
   onPageClicked(page: number) {
     this.currentPage = page;
-
-    forkJoin(this.gameService.search(this.currentPage, this.gamesPerPage, this.searchValue),
-      this.store.select(getGamesInCart).pipe(first())
+    
+    //todo fix compile errors
+    this.store.select(getGamesState).pipe(first(), 
+      mergeMap(state => 
+        this.gameService.search(this.currentPage, this.gamesPerPage, state.searchValue).pipe(
+          map(response => [response, state.gamesInCart])))
     ).subscribe(([searchResponse, gamesInCart]) => {
       this.gamesTotalCount = searchResponse.totalCount;
       this.setGames(searchResponse.games, gamesInCart);

@@ -3,9 +3,9 @@
     <div class="col-lg-11 pt-4">
       <div class="input-group">
         <div class="input-group-prepend">
-          <button (click)="search(searchInput.value)" class="btn btn-outline-success" type="button">Search</button>
+          <button (click)="search()" class="btn btn-outline-success" type="button">Search</button>
         </div>
-        <input (keydown.enter)="search(searchInput.value)" type="text" class="form-control green-outline-focus" placeholder="" #searchInput>
+        <input (keydown.enter)="search()" type="text" class="form-control green-outline-focus" placeholder="" [(ngModel)]="searchValue">
       </div>
     </div>
   </div>

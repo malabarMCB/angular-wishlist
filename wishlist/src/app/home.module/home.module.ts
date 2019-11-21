@@ -9,6 +9,7 @@ import {GamesService} from '../services/games.service.';
 import {HttpClientModule} from '@angular/common/http';
 import { GameComponent } from './game/game.component';
 import { environment } from 'src/environments/environment';
+import {FormsModule} from '@angular/forms';
 
 const gamesContainerComponentOptions =
 {gamesPerPage: environment.gamesPerPage, showPagesCount: environment.showPagesCount} as GamesContainerComponentOptions;
@@ -25,6 +26,7 @@ const gamesContainerComponentOptions =
   imports: [
     CommonModule,
     HttpClientModule,
+    FormsModule,
 
   ],
   providers: [

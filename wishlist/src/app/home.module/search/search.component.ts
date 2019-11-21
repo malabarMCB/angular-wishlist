@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { GameState } from '../../game/game.reducer';
 import { setSearchValue } from '../../game/game.actions';
-import { ActivatedRoute, Router } from '@angular/router';
+import {ActivatedRoute, NavigationExtras, Router} from '@angular/router';
 
 @Component({
   selector: 'app-search',
@@ -20,10 +20,10 @@ export class SearchComponent implements OnInit {
     this.setSearchValue();
   }
 
-  search(searchValue: string): boolean {
+  search(): boolean {
     const homePagePath = '';
-    const navigationPromise = searchValue
-      ? this.router.navigate([homePagePath], { queryParams: { search: searchValue } })
+    const navigationPromise = this.searchValue
+      ? this.router.navigate([homePagePath], { queryParams: { search: this.searchValue } })
       : this.router.navigate([homePagePath]);
 
     navigationPromise.then(_ => this.setSearchValue());

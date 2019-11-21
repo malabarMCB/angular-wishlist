@@ -60,7 +60,7 @@ export class GamesContainerComponent implements OnInit, OnDestroy {
 
     forkJoin(this.gameService.search(this.currentPage, this.gamesPerPage, this.searchValue),
       this.store.select(getGamesInCart).pipe(first())
-    ).pipe(first()).subscribe(([searchResponse, gamesInCart]) => {
+    ).subscribe(([searchResponse, gamesInCart]) => {
       this.gamesTotalCount = searchResponse.totalCount;
       this.setGames(searchResponse.games, gamesInCart);
     });

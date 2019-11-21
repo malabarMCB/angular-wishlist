@@ -6,6 +6,7 @@ import {Game} from '../../game/game.model';
 import {addGameToCart} from '../../game/game.actions';
 import {forkJoin, Subscription} from 'rxjs';
 import {first, map, mergeMap, skip} from 'rxjs/operators';
+import {GamesSearchResponse} from '../../services/games-search-response';
 
 export class GamesContainerComponentOptions {
   gamesPerPage: number;
@@ -58,13 +59,12 @@ export class GamesContainerComponent implements OnInit, OnDestroy {
 
   onPageClicked(page: number) {
     this.currentPage = page;
-    
-    //todo fix compile errors
-    this.store.select(getGamesState).pipe(first(), 
-      mergeMap(state => 
+
+    this.store.select(getGamesState).pipe(first(),
+      mergeMap(state =>
         this.gameService.search(this.currentPage, this.gamesPerPage, state.searchValue).pipe(
           map(response => [response, state.gamesInCart])))
-    ).subscribe(([searchResponse, gamesInCart]) => {
+    ).subscribe(([searchResponse, gamesInCart]: [GamesSearchResponse, Game[]]) => {
       this.gamesTotalCount = searchResponse.totalCount;
       this.setGames(searchResponse.games, gamesInCart);
     });

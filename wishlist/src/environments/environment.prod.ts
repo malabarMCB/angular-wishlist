@@ -1,3 +1,5 @@
 export const environment = {
-  production: true
+  production: true,
+  gamesPerPage: 8,
+  showPagesCount: 5
 };

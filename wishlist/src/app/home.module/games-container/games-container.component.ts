@@ -7,29 +7,34 @@ import {addGameToCart} from '../../game/game.actions';
 import {forkJoin, Subscription} from 'rxjs';
 import {first, map, mergeMap, skip} from 'rxjs/operators';
 
+export class GamesContainerComponentOptions {
+  gamesPerPage: number;
+  showPagesCount: number;
+}
+
 @Component({
   selector: 'app-games-container',
   templateUrl: './games-container.component.html',
   styleUrls: ['./games-container.component.sass']
 })
 export class GamesContainerComponent implements OnInit, OnDestroy {
-  games: {info: Game, isInCart: boolean}[] = [];
-
-/*
-  take from config
-*/
-  readonly gamesPerPage = 8;
-  gamesTotalCount = 0;
-  readonly showPagesCount = 5;
-
-  currentPage = 1;
-
-  searchValue: string;
+  private readonly gamesPerPage: number;
+  readonly showPagesCount: number;
 
   private getSearchValueSubscription: Subscription;
   private getGamesInCartSubscription: Subscription;
 
-  constructor(private readonly gameService: GamesService, private readonly store: Store<GameState>) { }
+  games: {info: Game, isInCart: boolean}[] = [];
+  gamesTotalCount = 0;
+  currentPage = 1;
+  searchValue: string;
+
+  constructor(private readonly gameService: GamesService,
+              private readonly store: Store<GameState>,
+              options: GamesContainerComponentOptions) {
+    this.gamesPerPage = options.gamesPerPage;
+    this.showPagesCount = options.showPagesCount;
+  }
 
   ngOnInit() {
     this.getSearchValueSubscription = this.store.select(getSearchValue).pipe(

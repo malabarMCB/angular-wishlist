@@ -17,24 +17,10 @@
   </div>
   <div class="modal-body">
 
-    <div *ngFor="let game of games" class="card mb-3 game-card">
-      <div class="row no-gutters">
-        <div class="col-md-4">
-          <img src="{{game.coverUrl}}" class="card-img" alt="...">
-        </div>
-        <div class="col-md-6">
-          <div class="card-body">
-            <h5 class="card-title">{{game.name}}</h5>
-            <p class="card-text">${{game.price}}</p>
-          </div>
-        </div>
-        <div class="col-md-2 pr-2 pt-1">
-          <button type="button" class="close" aria-label="Close" (click)="removeGameFromCart(game.id)">
-            <span aria-hidden="true">&times;</span>
-          </button>
-        </div>
-      </div>
-    </div>
+    <app-shopping-cart-game *ngFor="let game of games"
+                            [game]="game"
+                            (gameRemoved)="onGameRemoved($event)">
+    </app-shopping-cart-game>
 
   </div>
   <div class="modal-footer justify-content-center">

@@ -32,9 +32,8 @@ export class HeaderComponent implements OnInit, OnDestroy {
     return this.games.length === 0;
   }
 
-  removeGameFromCart(gameId: string): boolean {
+  onGameRemoved(gameId: string): void {
     this.store.dispatch(removeGameFromCart({gameId}));
-    return false;
   }
 
   openCart(content: any): boolean {

@@ -10,6 +10,7 @@ import {HttpClientModule} from '@angular/common/http';
 import { GamesContainerItemComponent } from './games-container-item/games-container-item.component';
 import { environment } from 'src/environments/environment';
 import {FormsModule} from '@angular/forms';
+import { ShoppingCartGameComponent } from './shopping-cart-game/shopping-cart-game.component';
 
 const gamesContainerComponentOptions =
 {gamesPerPage: environment.gamesPerPage, showPagesCount: environment.showPagesCount} as GamesContainerComponentOptions;
@@ -22,6 +23,7 @@ const gamesContainerComponentOptions =
     GamesContainerComponent,
     PaginationComponent,
     GamesContainerItemComponent,
+    ShoppingCartGameComponent,
   ],
   imports: [
     CommonModule,

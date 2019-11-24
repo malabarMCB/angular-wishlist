@@ -1,5 +1,5 @@
 import {createAction, props} from '@ngrx/store';
-import {Game} from './game.model';
+import {Game} from '../models/game';
 
 export const setSearchValue = createAction(
   '[Game] Set search value',
@@ -12,6 +12,6 @@ export const addGameToCart = createAction(
 );
 
 export const removeGameFromCart = createAction(
-  '[Game] Remove game from cart',
+  '[Game] Remove models from cart',
   props<{gameId: string}>()
 );

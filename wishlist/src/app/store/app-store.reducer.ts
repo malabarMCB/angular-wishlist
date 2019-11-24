@@ -1,6 +1,6 @@
 import {Action, createFeatureSelector, createReducer, createSelector, on} from '@ngrx/store';
-import * as GameActions from './game.actions';
-import {Game} from './game.model';
+import * as GameActions from './app-store.actions';
+import {Game} from '../models/game';
 
 export interface GameState {
   searchValue: string;

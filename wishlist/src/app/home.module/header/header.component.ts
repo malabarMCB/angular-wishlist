@@ -1,8 +1,8 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
-import {Game} from '../../game/game.model';
+import {Game} from '../../models/game';
 import {Store} from '@ngrx/store';
-import {GameState, getGamesInCart} from '../../game/game.reducer';
-import {removeGameFromCart} from '../../game/game.actions';
+import {GameState, getGamesInCart} from '../../store/app-store.reducer';
+import {removeGameFromCart} from '../../store/app-store.actions';
 import {Subscription} from 'rxjs';
 import {NgbActiveModal, NgbModal, NgbModalRef} from '@ng-bootstrap/ng-bootstrap';
 

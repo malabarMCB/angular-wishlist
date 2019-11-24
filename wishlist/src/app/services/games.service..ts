@@ -1,9 +1,9 @@
 import { Injectable } from '@angular/core';
 import {Observable} from 'rxjs';
 import {HttpClient} from '@angular/common/http';
-import {Game} from '../game/game.model';
+import {Game} from '../models/game';
 import {map} from 'rxjs/operators';
-import {GamesSearchResponse} from './games-search-response';
+import {GamesSearchResponse} from '../models/games-search-response';
 
 @Injectable()
 export class GamesService {

@@ -1,12 +1,12 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
 import {GamesService} from '../../services/games.service.';
 import {Store} from '@ngrx/store';
-import {GameState, getGamesInCart, getSearchValue, getGamesState} from '../../game/game.reducer';
-import {Game} from '../../game/game.model';
-import {addGameToCart} from '../../game/game.actions';
+import {GameState, getGamesInCart, getSearchValue, getGamesState} from '../../store/app-store.reducer';
+import {Game} from '../../models/game';
+import {addGameToCart} from '../../store/app-store.actions';
 import {forkJoin, Subscription} from 'rxjs';
 import {first, map, mergeMap, skip} from 'rxjs/operators';
-import {GamesSearchResponse} from '../../services/games-search-response';
+import {GamesSearchResponse} from '../../models/games-search-response';
 
 export class GamesContainerComponentOptions {
   gamesPerPage: number;

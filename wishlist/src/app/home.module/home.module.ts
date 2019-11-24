@@ -26,8 +26,7 @@ const gamesContainerComponentOptions =
   imports: [
     CommonModule,
     HttpClientModule,
-    FormsModule,
-
+    FormsModule
   ],
   providers: [
     {provide: GamesService, useClass: GamesService},

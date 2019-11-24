@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Store } from '@ngrx/store';
-import { GameState } from '../../game/game.reducer';
-import { setSearchValue } from '../../game/game.actions';
+import { GameState } from '../../store/app-store.reducer';
+import { setSearchValue } from '../../store/app-store.actions';
 import {ActivatedRoute, NavigationExtras, Router} from '@angular/router';
 
 @Component({

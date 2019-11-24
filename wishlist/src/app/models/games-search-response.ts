@@ -1,4 +1,4 @@
-import {Game} from '../game/game.model';
+import {Game} from './game';
 
 export interface GamesSearchResponse {
   totalCount: number;

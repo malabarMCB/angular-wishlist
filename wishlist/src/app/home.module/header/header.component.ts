@@ -4,6 +4,7 @@ import {Store} from '@ngrx/store';
 import {GameState, getGamesInCart} from '../../game/game.reducer';
 import {removeGameFromCart} from '../../game/game.actions';
 import {Subscription} from 'rxjs';
+import {NgbActiveModal, NgbModal, NgbModalRef} from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
   selector: 'app-header',
@@ -11,15 +12,20 @@ import {Subscription} from 'rxjs';
   styleUrls: ['./header.component.sass']
 })
 export class HeaderComponent implements OnInit, OnDestroy {
+  private getGamesInCartSubscription: Subscription;
+  private cartModal: NgbModalRef;
 
   games: Game[];
 
-  private getGamesInCartSubscription: Subscription;
-
-  constructor(private store: Store<GameState>) { }
+  constructor(private readonly store: Store<GameState>, private readonly modalService: NgbModal) { }
 
   ngOnInit() {
-    this.store.select(getGamesInCart).subscribe(games => this.games = games);
+    this.store.select(getGamesInCart).subscribe(games => {
+      this.games = games;
+      if (this.isCartEmpty() && this.cartModal) {
+        this.cartModal.close();
+      }
+    });
   }
 
   isCartEmpty(): boolean {
@@ -28,6 +34,11 @@ export class HeaderComponent implements OnInit, OnDestroy {
 
   removeGameFromCart(gameId: string): boolean {
     this.store.dispatch(removeGameFromCart({gameId}));
+    return false;
+  }
+
+  openCart(content: any): boolean {
+    this.cartModal = this.modalService.open(content);
     return false;
   }
 

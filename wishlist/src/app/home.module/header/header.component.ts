@@ -38,7 +38,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
   }
 
   openCart(content: any): boolean {
-    this.cartModal = this.modalService.open(content);
+    this.cartModal = this.modalService.open(content, {scrollable: true});
     return false;
   }
 

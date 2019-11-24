@@ -9,12 +9,12 @@
       </div>
 
       <div *ngIf="games.length != 0" class="row">
-        <app-game *ngFor="let game of games"
+        <app-games-container-item *ngFor="let game of games"
                 [game]="game.info"
                 [isInCart]="game.isInCart"
                 (gameSelected)="onGameSelected($event)"
                 class="col-lg-3 col-md-6 mb-4">
-        </app-game>
+        </app-games-container-item>
       </div>
 
     </div>

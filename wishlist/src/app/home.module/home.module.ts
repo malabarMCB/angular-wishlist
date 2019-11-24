@@ -7,7 +7,7 @@ import { GamesContainerComponent, GamesContainerComponentOptions } from './games
 import { PaginationComponent } from './pagination/pagination.component';
 import {GamesService} from '../services/games.service.';
 import {HttpClientModule} from '@angular/common/http';
-import { GameComponent } from './game/game.component';
+import { GamesContainerItemComponent } from './games-container-item/games-container-item.component';
 import { environment } from 'src/environments/environment';
 import {FormsModule} from '@angular/forms';
 
@@ -21,7 +21,7 @@ const gamesContainerComponentOptions =
     SearchComponent,
     GamesContainerComponent,
     PaginationComponent,
-    GameComponent,
+    GamesContainerItemComponent,
   ],
   imports: [
     CommonModule,

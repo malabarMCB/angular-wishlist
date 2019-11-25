@@ -2,9 +2,10 @@ import {Component, OnDestroy, OnInit} from '@angular/core';
 import {Game} from '../../models/game';
 import {Store} from '@ngrx/store';
 import {GameState, getGamesInCart} from '../../store/app-store.reducer';
-import {removeGameFromCart} from '../../store/app-store.actions';
+import {clearGamesInCart, removeGameFromCart} from '../../store/app-store.actions';
 import {Subscription} from 'rxjs';
 import {NgbActiveModal, NgbModal, NgbModalRef} from '@ng-bootstrap/ng-bootstrap';
+import {first} from 'rxjs/operators';
 
 @Component({
   selector: 'app-header',
@@ -38,6 +39,13 @@ export class HeaderComponent implements OnInit, OnDestroy {
 
   openCart(content: any): boolean {
     this.cartModal = this.modalService.open(content, {scrollable: true});
+    return false;
+  }
+
+  confirmPurchase(): boolean {
+    const msg = 'You`ve bought: \n' + this.games.map(g => g.name).join('\n');
+    this.store.dispatch(clearGamesInCart());
+    alert(msg);
     return false;
   }
 

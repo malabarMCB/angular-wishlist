@@ -6,10 +6,10 @@ import {gameReducer} from './app-store.reducer';
 import {StoreDevtoolsModule} from '@ngrx/store-devtools';
 import {environment} from '../../environments/environment';
 
-function localStorageSyncReducer(reducer: ActionReducer<any>): ActionReducer<any> {
+export function localStorageSyncReducer(reducer: ActionReducer<any>): ActionReducer<any> {
   return localStorageSync({keys: ['state'], rehydrate: true})(reducer);
 }
-const metaReducers: Array<MetaReducer<any, any>> = [localStorageSyncReducer];
+export const metaReducers: Array<MetaReducer<any, any>> = [localStorageSyncReducer];
 
 @NgModule({
   declarations: [],

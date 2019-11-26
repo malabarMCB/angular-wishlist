@@ -10,7 +10,7 @@ import {ActivatedRoute, NavigationExtras, Router} from '@angular/router';
   styleUrls: ['./search.component.sass']
 })
 export class SearchComponent implements OnInit {
-  private searchValue: string;
+  searchValue: string;
 
   constructor(private store: Store<GameState>, private route: ActivatedRoute, private router: Router) {
     this.route.queryParams.subscribe(params => this.searchValue = params['search'] || '');
